@@ -1,0 +1,50 @@
+container {
+  text-align: center;
+}
+.input {
+  font-style: italic;
+  font-size: 2rem;
+}
+h1{
+  text-align: center;
+  color: #b9271c;
+}
+.panel {
+  display: none;
+}
+#ticketInput {
+  height: 70rem;
+  color: #b9271c;
+  text-align: center;
+  margin: auto;
+  padding-top: 17rem;
+}
+#typeIn {
+  width: 30%;
+  margin: auto;
+}
+.movie-title {
+  width: 20%;
+}
+.movie-times {
+  width: 20%;
+}
+button {
+  border-radius: 1rem;
+  color: #b9271c;
+}
+.panel {
+  width: 88%;
+  text-align: center;
+  font-size: 3rem;
+  color: #b9271c;
+}
+.panel-body {
+  height: 22rem;
+  text-align: right;
+  background-repeat: no-repeat;
+  padding: center;
+  color: #ccc;
+  font-size: 3rem;
+
+}

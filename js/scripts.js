@@ -1,56 +1,52 @@
-let container = document.querySelector(".container");
-let seats = document.querySelectorAll(".row .seat:not(.occupied)");
-let count = document.getElementById("count");
-let total = document.getElementById('total');
-let movieSelect = document.getElementById("movie");
-
-populateUI();
-
-let ticketPrice = +movieSelect.value;
-
-//Save movie and ticket Price
-function setMoveData(movieIndex, moviePrice) {
-  localStorage.setItem("selectedMovieIndex", movieIndex);
-  localStorage.setItem("selectedMoviePrice", moviePrice);
+//Business Logic
+function Ticket(age, title, time){
+  this.title = title;
+  this.time = time;
+  this.rating = age;
+  this.price = 15;
 }
-
-//Update count and total
-function updateSelectedCount() {
-  let selectedSeats = document.querySelectorAll(".row .seat.selected");
-  let seatsIndex = [...selectedSeats].map(seat => [...seats].indexOf(seat));
-  localStorage.setItem("selectedSeats", toString(seatsIndex));
-  let selectedSeatsCount = selectedSeats.length;
-  count.innerText = selectedSeatsCount;
-  total.innerText = selectedSeatsCount * ticketPrice;
-  setMovieData(movieSelect.selectedIndex, movieSelect.value);
-}
-
-// local storage and populate UI
-
-function populateUI() {
-  let selectedSeats = parseInt(localStorage.getItem("selectedSeats"));
-  if (selectedSeats !== null && selectedSeats.length > 0) {
-    seats.forEach((seat, index) => {
-      if (selectedSeats.indexOf(index) > -1) {
-        seat.classList.add("selected");
-      }
-    });
-  }
-  let selectedMovieIndex = localStorage.getItem("selectedMovieIndex");
-  if (selectedMovieIndex !== null) {
-    movieSelect.selectedIndex = selectedMovieIndex;
+Ticket.prototype.translation = function(time){
+  if (time === 1){
+    return "Afternoon Matinee"
+  }else if (time === 2){
+    return "Evening Show"
+  }else {
+    return "Late Night Showing"
   }
 }
+Ticket.prototype.calculation = function(age, time, price) {
+  let ticketCost = 0;
+  if (age <= 17){
+    price -= 5;
+  }else if ((age >= 18) && (age <= 64)){
+    price;
+  }else {
+    price -= 7;
+  }if (time === 1) {
+    price -= 2;
+  }else {
+    price;
+  }return ticketCost += price;
+}
+function resetFields() {
+  $("input#age").val("");
+}
 
-//select movie
-
-container.addEventListener("click", e => {
-  if (e.target.classList.contains("seat") && !e.target.classList.contains("occupied")) {
-    e.target.classList.toggle("selected");
-    updateSelectedCount();
-  }
+//User Interface Logic
+$(document).ready(function(){
+  $("#ticketInput").submit(function(event){
+    $("#ticketInput").hide();
+    $(".panel").show();
+    let ageInput = parseInt($("input#age").val());
+    let titleInput = $("#movie-title").val();
+    let timeInput = parseInt($("#movie-times").val());
+    let newTicket = new Ticket(ageInput, titleInput, timeInput);
+    let cost = newTicket.calculation(ageInput, timeInput, newTicket.price);
+    newTicket.price = cost;
+    let showing = newTicket.translation(timeInput);
+    $("#ticket").append(`<li>${titleInput}</li>`);
+    $("#ticket").append(`<li>${showing}</li>`);
+    $("#ticket").append(`<li>$${cost}</li>`);
+    event.preventDefault();
+  });
 });
-
-//count and total
-
-updateSelectedCount();
